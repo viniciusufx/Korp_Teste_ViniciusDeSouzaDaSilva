@@ -1,0 +1,112 @@
+<div class="container-fluid">
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <h2 class="fw-bold">Produtos</h2>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row g-3">
+
+        <div class="col-12 col-md-3">
+          <label class="form-label">Código</label>
+          <input type="text" class="form-control" [(ngModel)]="newProduct.codigo">
+        </div>
+
+        <div class="col-12 col-md-5">
+          <label class="form-label">Descrição</label>
+          <input type="text" class="form-control" [(ngModel)]="newProduct.descricao">
+        </div>
+
+        <div class="col-12 col-md-2">
+          <label class="form-label">Saldo</label>
+          <input type="number" class="form-control" [(ngModel)]="newProduct.saldo">
+        </div>
+
+        <div class="col-12 col-md-2 d-flex align-items-end">
+
+          <button
+            class="btn w-100"
+            [ngClass]="editingProductId ? 'btn-success' : 'btn-primary'"
+            (click)="editingProductId ? updateProduct() : createProduct()">
+
+            {{ editingProductId ? 'Atualizar' : 'Adicionar' }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="editingProductId" class="mt-2">
+        <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit()">
+          Cancelar edição
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+
+          <thead class="table-light">
+            <tr>
+              <th>Id</th>
+              <th>Código</th>
+              <th>Descrição</th>
+              <th>Saldo</th>
+              <th class="text-end">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngIf="loading">
+              <td colspan="5" class="text-center p-4">
+                Carregando...
+              </td>
+            </tr>
+
+            <tr *ngFor="let product of products">
+              <td class="text-muted small">{{ product.id }}</td>
+              <td>{{ product.codigo }}</td>
+              <td>{{ product.descricao }}</td>
+              <td>{{ product.saldo }}</td>
+
+              <td class="text-end">
+
+                <button class="btn btn-sm btn-warning me-2"
+                        (click)="startEdit(product)">
+                  Editar
+                </button>
+
+                <button class="btn btn-sm btn-danger"
+                        (click)="deleteProduct(product.id)">
+                  Remover
+                </button>
+
+              </td>
+            </tr>
+
+            <tr *ngIf="!loading && products.length === 0">
+              <td colspan="5" class="text-center p-4">
+                Nenhum produto encontrado
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>

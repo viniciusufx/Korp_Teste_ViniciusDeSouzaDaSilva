@@ -1,0 +1,6 @@
+@korp_billing_service_HostAddress = http://localhost:5188
+
+GET {{korp_billing_service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

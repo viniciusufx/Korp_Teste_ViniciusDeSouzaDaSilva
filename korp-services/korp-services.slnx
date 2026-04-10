@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="korp-billing-service/korp-billing-service.csproj" />
+  <Project Path="korp-stock-service/korp-stock-service.csproj" />
+</Solution>

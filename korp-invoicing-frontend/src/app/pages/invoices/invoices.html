@@ -1,0 +1,130 @@
+<div class="container-fluid">
+
+  <h2 class="fw-bold mb-3">Notas Fiscais</h2>
+
+  <!-- FORM -->
+  <div class="card mb-3">
+    <div class="card-body">
+
+      <div class="row g-2">
+
+        <div class="col-md-6">
+          <input class="form-control"
+                 placeholder="Product ID"
+                 [(ngModel)]="newItem.productId">
+        </div>
+
+        <div class="col-md-3">
+          <input type="number"
+                 class="form-control"
+                 [(ngModel)]="newItem.quantity">
+        </div>
+
+        <div class="col-md-3">
+          <button class="btn btn-primary w-100"
+                  (click)="addItem()">
+            Add
+          </button>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div *ngFor="let i of items; let idx = index"
+           class="d-flex justify-content-between border p-2">
+
+        {{ i.productId }} - {{ i.quantity }}
+
+        <button class="btn btn-sm btn-danger"
+                (click)="removeItem(idx)">
+          X
+        </button>
+
+      </div>
+
+      <button class="btn btn-success w-100 mt-3"
+              (click)="create()">
+        Criar Nota
+      </button>
+
+    </div>
+  </div>
+
+  <!-- LIST -->
+  <div class="card">
+    <div class="card-body table-responsive">
+
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Número</th>
+            <th>Status</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <ng-container *ngFor="let inv of invoices">
+        
+            <!-- LINHA PRINCIPAL -->
+            <tr>
+              <td>{{ inv.id }}</td>
+              <td>{{ inv.number }}</td>
+              <td>{{ getStatus(inv.status) }}</td>
+        
+              <td class="text-end">
+                <button *ngIf="inv.items?.length"
+                        class="btn btn-info btn-sm me-2"
+                        (click)="toggleItems(inv.id)">
+                  {{ isExpanded(inv.id) ? 'Hide Items' : 'Show Items' }}
+                </button>
+        
+                <button class="btn btn-warning btn-sm me-2"
+                        (click)="print(inv.id)"
+                        [disabled]="inv.status !== 0">
+                  Print
+                </button>
+        
+                <button class="btn btn-danger btn-sm"
+                        (click)="delete(inv.id)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+        
+            <!-- ITENS -->
+            <tr *ngIf="isExpanded(inv.id) && inv.items?.length">
+              <td colspan="4">
+                <div class="bg-light p-2 rounded">
+        
+                  <strong>Itens da Nota:</strong>
+        
+                  <div *ngFor="let item of inv.items" class="small">
+                    • Product: {{ item.productId }} | Qty: {{ item.quantity }}
+                  </div>
+        
+                </div>
+              </td>
+            </tr>
+        
+          </ng-container>
+        
+          <!-- EMPTY STATE -->
+          <tr *ngIf="!loading && invoices.length === 0">
+            <td colspan="4" class="text-center p-4">
+              Nenhuma nota fiscal encontrada
+            </td>
+          </tr>
+        
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
